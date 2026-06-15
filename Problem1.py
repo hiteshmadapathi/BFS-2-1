@@ -1,3 +1,43 @@
+# Time Complexity --> O(m*n) will be the amortized complexity. As the number of initial rotten oranges increases, the number of times revisiting an orange will decrease since the distance increases. 
+# Space Complexity --> O(m*n)
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        self.dirs = [(0,1),(1,0),(0,-1),(-1,0)]
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==2:
+                    self.dfs(grid, i, j, 2) 
+        
+        maxi = 2
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==1:
+                    return -1
+                maxi = max(maxi, grid[i][j])
+        return maxi-2
+        
+    
+    def dfs(self, grid, r, c, time):
+        #base 
+        if r<0 or c<0 or r==len(grid) or c==len(grid[0]):
+            return
+        if grid[r][c]!=1 and grid[r][c]<time:
+            return
+
+        #logic
+        grid[r][c] = time 
+        for dir in self.dirs:
+            nr = r + dir[0]
+            nc = c + dir[1]
+            self.dfs(grid, nr, nc, time+1)
+
+
+
+
+
+'''
 # Time Complexity --> O(m*n)
 # Space Complexity --> O(m*n)
 
@@ -37,3 +77,5 @@ class Solution:
         if fresh>0:
             return -1
         return time-1
+
+'''
